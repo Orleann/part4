@@ -1,55 +1,34 @@
 const dummy = (blogs) => {
-    return 1
-}
+  return 1;
+};
 
 const totalLikes = (blogs) => {
-    return blogs.reduce((total, current) => total + current.likes, 0)
-}
+  const likesArray = blogs.map((blog) => blog.likes);
 
-const favoriteBlog = (blogs) => {
-    let likes = blogs.map(blog => blog.likes)
-    let index = likes.indexOf(Math.max(...likes))
-    return blogs[index]
-}
+  const likes = likesArray.reduce((acc, cur) => {
+    return acc + cur;
+  }, 0);
 
-const mostBlogs = (blogs) => {
-    let authors = blogs.map(blog => blog.author)
-    authors = [...new Set(authors)]
+  return likes;
+};
 
-    let published = new Array(authors.length).fill(0)
-    blogs.map(blog =>
-        published[authors.indexOf(blog.author)] += 1
-    )
+const favouriteBlog = (blogs) => {
+  const likesArray = blogs.map((blog) => blog.likes);
 
-    let index = published.indexOf(Math.max(...published))
-    
-    return {
-        author: authors[index],
-        blogs: published[index]
-    }
-}
+  const max = likesArray.reduce((acc, cur) => Math.max(acc, cur));
 
-const mostLikes = (blogs) => {
-    let authors = blogs.map(blog => blog.author)
-    authors = [...new Set(authors)]
+  const indexOfMax = likesArray.indexOf(max);
 
-    let total = new Array(authors.length).fill(0)
-    blogs.map(blog =>
-        total[authors.indexOf(blog.author)] += blog.likes
-    )
+  const theFavouriteBlog = blogs[indexOfMax];
+  delete theFavouriteBlog._id;
+  delete theFavouriteBlog.url;
+  delete theFavouriteBlog.__v;
 
-    let index = total.indexOf(Math.max(...total))
-
-    return {
-        author: authors[index],
-        likes: total[index]
-    }
-}
+  return theFavouriteBlog;
+};
 
 module.exports = {
-    dummy,
-    totalLikes,
-    favoriteBlog,
-    mostBlogs,
-    mostLikes
-}
+  dummy,
+  totalLikes,
+  favouriteBlog,
+};
